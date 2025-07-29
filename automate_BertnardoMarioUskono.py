@@ -1,5 +1,4 @@
 # automate_BertnardoMarioUskono.py
-
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import os
@@ -10,7 +9,6 @@ def load_dataset(path):
 def preprocess(df):
     df['label'] = df['quality'].apply(lambda x: 1 if x >= 7 else 0)
     df.drop('quality', axis=1, inplace=True)
-
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(df.drop('label', axis=1))
     
@@ -20,7 +18,10 @@ def preprocess(df):
     return df_scaled
 
 def save_dataset(df, output_path):
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    # Only create directories if there's actually a directory path
+    dir_path = os.path.dirname(output_path)
+    if dir_path:  # Only if dir_path is not empty
+        os.makedirs(dir_path, exist_ok=True)
     df.to_csv(output_path, index=False)
 
 if __name__ == "__main__":
